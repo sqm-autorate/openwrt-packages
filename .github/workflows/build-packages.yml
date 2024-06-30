@@ -8,26 +8,30 @@ env:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    defaults:
-      run:
-        working-directory: ./sdk
     steps:
       - uses: actions/checkout@v4
         with:
           path: "./feed"
       - name: Download SDK
-        run: wget -O- "$OWRT_SDK" | tar --strip-components=1 -xJ
+        run: |
+            mkdir -p ./sdk
+            wget -O- "$OWRT_SDK" | tar --strip-components=1 -xJ -C ./sdk
       - name: Create feeds.conf
         run: |
             cp -v feeds.conf.default feeds.conf
             echo "src-link sqm-autorate $GITHUB_WORKSPACE/feed" >> feeds.conf
+        working-directory: ./sdk
       - name: Update and install feeds
         run: |
             ./scripts/feeds update -a
             ./scripts/feeds install -a
+        working-directory: ./sdk
       - name: Create default config
         run: make defconfig
+        working-directory: ./sdk
       - name: Build lua-vstruct
         run: make package/lua-vstruct/compile
+        working-directory: ./sdk
       - name: Build sqm-autorate
         run: make package/sqm-autorate/compile
+        working-directory: ./sdk
