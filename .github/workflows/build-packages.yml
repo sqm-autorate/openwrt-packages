@@ -15,11 +15,11 @@ jobs:
       - name: Download SDK
         run: |
             mkdir -p ./sdk
-            wget -O- "$OWRT_SDK" | tar --strip-components=1 -xvJ -C ./sdk
+            wget -O- "$OWRT_SDK" | tar --strip-components=1 -xJ -C ./sdk
       - name: Create feeds.conf
         run: |
             cp -v feeds.conf.default feeds.conf
-            echo "src-link sqm-autorate $GITHUB_WORKSPACE/feed" | tee -a feeds.conf
+            echo "src-link sqm_autorate $GITHUB_WORKSPACE/feed" | tee -a feeds.conf
         working-directory: ./sdk
       - name: Update and install feeds
         run: |
