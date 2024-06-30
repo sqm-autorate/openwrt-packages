@@ -35,3 +35,8 @@ jobs:
       - name: Build sqm-autorate
         run: make package/sqm-autorate/compile
         working-directory: ./sdk
+      - name: Archive packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: ./sdk/bin/packages/**/sqm_autorate/*.ipk
