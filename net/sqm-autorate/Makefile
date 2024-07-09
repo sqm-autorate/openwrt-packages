@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sqm-autorate
-PKG_VERSION:=0.6.0
+PKG_VERSION:=0.6.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/$(PKG_NAME)/$(PKG_NAME)/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=e0e0765e009e78227746d281e9e21ddaca6265d512dd0bdf909371821bfcea9f
+PKG_HASH:=acbaf29e98823bcd29cba5645761c3f9296a1422d45c231a6daee136a6bbb34f
 
 PKG_MAINTAINER:=Nils Andreas Svee <contact@lochnair.net>
 PKG_LICENSE:=MPL
