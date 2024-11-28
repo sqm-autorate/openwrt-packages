@@ -6,9 +6,12 @@ jobs:
   build:
     strategy:
       matrix:
-        sdk:
-          - 'https://downloads.openwrt.org/releases/23.05.5/targets/x86/64/openwrt-sdk-23.05.5-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz'
-          - 'https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst'
+        openwrt: ['23.03.5', 'snapshot']
+        include:
+          - openwrt: '23.03.5'
+            sdk: 'https://downloads.openwrt.org/releases/23.05.5/targets/x86/64/openwrt-sdk-23.05.5-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz'
+          - openwrt: 'snapshot'
+            sdk: 'https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +55,7 @@ jobs:
       - name: Archive packages
         uses: actions/upload-artifact@v4
         with:
-          name: packages
+          name: 'packages-${{ matrix.openwrt }}'
           path: |
             ./sdk/bin/packages/**/sqm_autorate/*.apk
             ./sdk/bin/packages/**/sqm_autorate/*.ipk
