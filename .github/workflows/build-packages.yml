@@ -29,7 +29,7 @@ jobs:
       - name: Download SDK
         run: |
             mkdir -p ./sdk
-            wget -O- "${{ matrix.sdk }}" | tar --strip-components=1 -x -C ./sdk
+            wget -O- "${{ matrix.sdk }}" | tar ${{ env.decompress_flag }} --strip-components=1 -x -C ./sdk
       - name: Create feeds.conf
         run: |
             cp -v feeds.conf.default feeds.conf
