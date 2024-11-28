@@ -1,12 +1,14 @@
 name: build
 run-name: Build openwrt packages
-on: [pull_request, push]
-
-env:
-  OWRT_SDK: 'https://downloads.openwrt.org/releases/23.05.3/targets/x86/64/openwrt-sdk-23.05.3-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz'
+on: [pull_request, push, workflow_dispatch]
 
 jobs:
   build:
+    strategy:
+      matrix:
+        sdk:
+          - 'https://downloads.openwrt.org/releases/23.05.5/targets/x86/64/openwrt-sdk-23.05.5-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz'
+          - 'https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -15,7 +17,7 @@ jobs:
       - name: Download SDK
         run: |
             mkdir -p ./sdk
-            wget -O- "$OWRT_SDK" | tar --strip-components=1 -xJ -C ./sdk
+            wget -O- "${{ matrix.sdk }}" | tar --strip-components=1 -x -C ./sdk
       - name: Create feeds.conf
         run: |
             cp -v feeds.conf.default feeds.conf
@@ -39,4 +41,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: packages
-          path: ./sdk/bin/packages/**/sqm_autorate/*.ipk
+          path: |
+            ./sdk/bin/packages/**/sqm_autorate/*.apk
+            ./sdk/bin/packages/**/sqm_autorate/*.ipk
