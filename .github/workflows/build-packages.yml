@@ -6,10 +6,14 @@ jobs:
   build:
     strategy:
       matrix:
-        openwrt: ['23.03.5', 'snapshot']
+        openwrt: ['23.03.5', '24.10.5', '25.12.0-rc5', 'snapshot']
         include:
           - openwrt: '23.03.5'
             sdk: 'https://downloads.openwrt.org/releases/23.05.5/targets/x86/64/openwrt-sdk-23.05.5-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz'
+          - openwrt: '24.10.5'
+            sdk: 'https://downloads.openwrt.org/releases/24.10.5/targets/x86/64/openwrt-sdk-24.10.5-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst'
+          - openwrt: '25.12.0-rc5'
+            sdk: 'https://downloads.openwrt.org/releases/25.12.0-rc5/targets/x86/64/openwrt-sdk-25.12.0-rc5-x86-64_gcc-14.3.0_musl.Linux-x86_64.tar.zst'
           - openwrt: 'snapshot'
             sdk: 'https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst'
     runs-on: ubuntu-24.04
@@ -57,5 +61,7 @@ jobs:
         with:
           name: 'packages-${{ matrix.openwrt }}'
           path: |
+            ./sdk/bin/packages/**/lua-vstruct/*.apk
+            ./sdk/bin/packages/**/lua-vstruct/*.ipk
             ./sdk/bin/packages/**/sqm_autorate/*.apk
             ./sdk/bin/packages/**/sqm_autorate/*.ipk
